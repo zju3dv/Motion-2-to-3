@@ -1,5 +1,5 @@
 # Motion-2-to-3: Leveraging 2D Motion Data to Boost 3D Motion Generation
-### [Project Page](https://zju3dv.github.io/Motion-2-to-3) | [Paper](https://arxiv.org/abs/)
+### [Project Page](https://zju3dv.github.io/Motion-2-to-3) | [Paper](https://arxiv.org/abs/2412.13111)
 
 > Motion-2-to-3: Leveraging 2D Motion Data to Boost 3D Motion Generation  
 > [Huaijin Pi](https://phj128.github.io/)<sup>\*</sup>,
