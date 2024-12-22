@@ -30,7 +30,7 @@ If you find this code useful for your research, please use the following BibTeX 
 @article{pi2024motion2to3,
   title={Motion-2-to-3: Leveraging 2D Motion Data to Boost 3D Motion Generation},
   author={Pi, Huaijin and Guo, Ruoxi and Shen, Zehong and Shuai, Qing and Hu, Zechen and Wang, Zhumei and Dong, Yajiao and Hu, Ruizhen and Komura, Taku and Peng, Sida and Zhou, Xiaowei},
-  journal={arXiv preprint arXiv:2412.},
+  journal={arXiv preprint arXiv:2412.13111},
   year={2024}
 }
 ```
