@@ -90,14 +90,17 @@ https://huggingface.co/juracera/Motion-2-to-3/tree/main
 ### Checkpoints
 You can download the checkpoints here:
 https://huggingface.co/juracera/Motion-2-to-3/tree/main
-save the one checkpoints in this directory.
-outputs/HumanML3D_2dmotionmv_nr/mdm-hmlfinetune/cpurand_best.ckpt
 
-**Notice: The provided checkpoints is an updated version compared to the one in the ICCV paper to publish. The former one has different performance inbetween machines. This version has a relative uniform performance trained on different machines such as V100, RTX4090. We recommend and welcome you to use this checkpoint for direct inference.**
+Save the one checkpoints in this directory:
+`./outputs/HumanML3D_2dmotionmv_nr/mdm-hmlfinetune/cpurand_best.ckpt`
 
-The referenced metric on HumanML3D, evaluated on an RTX2070. 
+**Notice: The provided checkpoints is an updated version. The former one has different performance inbetween machines. This version has a more uniform performance trained on different machines such as V100, RTX4090.**
 
-Again, metrics like FID can only be use as references in motion generation. We are more focused on its ability in generalization compared to former methods.
+**We recommend and welcome you to use this checkpoint for direct inference.**
+
+The referenced metric on HumanML3D, evaluated on an RTX2070 is showed in the table below.
+
+*Metrics like FID can only be use as references in motion generation. We are more focused on its ability in generalization compared to former methods.*
 
 | Metric (Our / Ground-truth) | Value         |
 | --------------------------- | ------------- |
@@ -114,7 +117,7 @@ Again, metrics like FID can only be use as references in motion generation. We a
 HYDRA_FULL_ERROR=1 python tools/train.py exp=mas/video_motion2dmv_nr/mdm_test global/task=motion2dmv/single_test2dmv_nr 
 ```
 Use saved results for fast metric calculation
-Check hmr4d/model/mas/callbacks/metric_generation.py. 
+Check `./hmr4d/model/mas/callbacks/metric_generation.py`. 
 This is not a runnable file, but you can see where the pth is saved.
 
 ### Test the MV model using New Text Prompts
