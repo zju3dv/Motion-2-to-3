@@ -1,0 +1,10 @@
+# @package _global_
+
+# Under development
+pl_trainer:
+  precision: 16-mixed
+
+model:
+  optimizer:
+    eps: 1e-5  # A smaller eps helps convergence; A larger eps helps stability
+

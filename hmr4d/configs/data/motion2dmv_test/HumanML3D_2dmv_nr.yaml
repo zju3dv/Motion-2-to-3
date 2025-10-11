@@ -1,0 +1,48 @@
+# definition of lightning datamodule (dataset + dataloader)
+_target_: hmr4d.datamodule.general_datamodule_v2.GeneralDataModule
+name: HumanML3D_2dmotionmv_nr
+
+dataset_opts:
+  root: "inputs/hml3d/joints3d.pth"
+  is_ignore_transl: True
+  is_root_next: True
+  required_text: null
+  anti_text: null
+  is_uniform_views: True 
+  N_views: 4
+  is_cam_rel2human: False
+  is_pinhole: False
+  train_fps: 30
+  distance: 4.5
+  is_notext: False
+  eleva_angle: 5
+  max_angle: 180
+  extra_path: null
+  test:
+    # HumanML3D
+    - _target_: hmr4d.dataset.HumanML3D.motion2d.MVCamDataset
+      split: "test"
+      root: ${data.dataset_opts.root}
+      is_ignore_transl: ${data.dataset_opts.is_ignore_transl}
+      is_root_next: ${data.dataset_opts.is_root_next}
+      is_pinhole: ${data.dataset_opts.is_pinhole}
+      train_fps: ${data.dataset_opts.train_fps}
+      distance: ${data.dataset_opts.distance}
+      max_angle: ${data.dataset_opts.max_angle}
+      is_notext: ${data.dataset_opts.is_notext}
+      eleva_angle: ${data.dataset_opts.eleva_angle}
+      required_text: ${data.dataset_opts.required_text}
+      anti_text: ${data.dataset_opts.anti_text}
+      is_uniform_views: ${data.dataset_opts.is_uniform_views}
+      N_views: ${data.dataset_opts.N_views}
+      is_cam_rel2human: ${data.dataset_opts.is_cam_rel2human}
+      extra_path: ${data.dataset_opts.extra_path}
+      # is_randomtest: True
+      # limit_size: 32 # 100 for fast debug
+      limit_size: null
+
+loader_opts:
+  test:
+    batch_size: 2
+    # batch_size: 128
+    num_workers: 0

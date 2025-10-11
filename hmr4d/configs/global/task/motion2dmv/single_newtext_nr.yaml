@@ -1,0 +1,26 @@
+# @package _global_
+defaults:
+  - override /data: motion2dmv_test/newtext_2dmv_nr
+  - override /callbacks: null
+  - _self_
+
+task: test
+
+# utilities in the entry file
+# will not override previous setting if already set
+# ckpt_path: ???
+ckpt_type: pl
+
+seed: 42
+
+# Callbacks
+# callbacks:
+#   dumper: # uncomment to enable generation result dumping
+#     _target_: hmr4d.utils.callbacks.dump_results.ResultDumper
+#     saved_dir: ./outputs/dumped_single_newtext_nr
+
+
+# lightning utilities
+pl_trainer:
+  devices: 1
+logger: null

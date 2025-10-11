@@ -1,0 +1,57 @@
+We present Motion-2-to-3, a framework that leverages 2D motion data to enhance 3D motion generation.
+
+First, we present a series of comparisons with baseline methods to demonstrate the advantages of our approach.
+
+Compared to our method, MDM results are less active and lively, lacking natural dynamics.
+
+MLD fails to generate correct motions.
+
+MotionCLIP generates unrealistic results, failing to align with natural human movements.
+
+MDM generates the wrong type of motion.
+
+MLD generates strange and unnatural motions.
+
+MotionCLIP produces unnatural results.
+
+Unlike our method, MDM fails to generate successful standing-up motions.
+
+Similarly, MLD also fails to generate standing-up motions.
+
+MotionCLIP generates very strange and unrealistic results.
+
+In the following section, we compare different strategies for leveraging 2D motion data.
+
+MAS generates unnatural results due to inconsistencies in multi-view 2D motions, whereas our method ensures consistency and realism.
+
+MotionBERT fails to capture global movements, resulting in unrealistic motions compared to our method.
+
+The 2D condition model exhibits strange turning motions. 
+
+MAS lacks global movements, limiting its ability to generate realistic and dynamic 3D motions.
+
+Similarly, MotionBERT struggles to produce global movements.
+
+The 2D condition model generates incorrect global movements.
+
+Next, we present the ablation study, analyzing the impact of different components in our method.
+
+Without pretraining, the model generates unnatural and strange poses.
+
+With consistency block, the model produces incorrect walking directions and insufficient turning motions.
+
+With only three views, the model generates incorrect walking motions.
+
+Without pretraining, the model generates strange poses.
+
+With consistency block, the model does not turn around sufficiently.
+
+With five views, the model produces worse turning motions.
+
+Finally, we present more results.
+
+Our method successfully generates realistic in-distribution motions, such as walking and crawling.
+
+Additionally, it synthesizes natural out-of-distribution motions, including juggling a soccer ball and playing tennis.
+
+Thank you for watching! 

@@ -1,0 +1,14 @@
+# This config's starting path should be "model/"
+defaults:
+  # Choices setted here will be presented, so later-overwriting is partial (I don't like it)
+  # choices are under common/optimizer & scheduler_cfg
+  - common/optimizer@optimizer: adamw_1e-4_GMD
+  - common/scheduler_cfg@scheduler_cfg: null
+
+_target_: hmr4d.model.mas.mas_pl.MASPL
+
+pipeline: null  # changes a lot
+
+args:
+  seed: ${seed}
+  rng_type: seed_plus_idx # [const, random, seed_plus_idx]

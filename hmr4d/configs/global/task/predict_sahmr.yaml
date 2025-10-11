@@ -1,0 +1,19 @@
+# @package _global_
+defaults:
+  - _self_
+  - override /callbacks: null
+
+task: predict
+
+# utilities in the entry file
+# will not override previous setting if already set
+ckpt_path: ??? 
+ckpt_type: ???  
+
+# lightning utilities
+pl_trainer:
+  devices: 1
+
+logger: null
+
+

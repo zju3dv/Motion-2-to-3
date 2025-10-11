@@ -1,0 +1,34 @@
+defaults:
+  - _self_
+  - /network/supermotion/priorsmpl_ditlikev2@args_denoiser3d
+  - /network/sm_endecoder/smplrelvecv5_cond@args.endecoder_opt
+  - /network/clip/clip_text_imgseq_bp32@args_clip
+
+_target_: hmr4d.model.supermotion.pipeline.motionsmplrelcondincam_prior.MotionSMPLRelCondInCamPriorPipeline
+
+args:
+  # Scheduler
+  scheduler_opt_train: # Always DDPM
+    beta_schedule: squaredcos_cap_v2 # cosine instead of linear
+    prediction_type: sample
+    clip_sample: False
+    timestep_spacing: "linspace"
+    num_train_timesteps: 100
+  scheduler_opt_sample:
+    _target_: diffusers.schedulers.DDPMScheduler # potentially DDIM
+    beta_schedule: squaredcos_cap_v2 # cosine instead of linear
+    prediction_type: sample
+    clip_sample: False
+    timestep_spacing: "linspace"
+    num_train_timesteps: 100
+  loss_pos_weight: 1.0
+  loss_vel_weight: 1.0
+  loss_contact_weight: 0.1
+
+  # Sample
+  guidance_scale: 1.  # NOTE: important I change here
+  num_inference_steps: 100
+  num_visualize: 100
+
+  # Encode/Decode Func
+  endecoder_opt: null

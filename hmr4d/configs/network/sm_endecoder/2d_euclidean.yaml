@@ -1,0 +1,5 @@
+_target_: hmr4d.model.mas.utils.motion2d_endecoder.EuclideanEnDecoder
+stats_module: hmr4d.network.mas.statistics
+stats_name: HML3D_ORTHO
+J: 22
+C: 2 

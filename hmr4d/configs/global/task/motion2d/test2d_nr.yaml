@@ -1,0 +1,24 @@
+# @package _global_
+defaults:
+  - override /data: motion2d_test/HumanML3D_2d
+  - override /callbacks: null
+  - _self_
+
+task: test
+
+# utilities in the entry file
+# will not override previous setting if already set
+ckpt_path: ???
+ckpt_type: pl
+
+seed: 42
+
+callbacks:
+  dump_results:
+    _target_: hmr4d.utils.callbacks.dump_results.ResultDumper
+    saved_dir: ./outputs/dumped_2donly_t2m
+
+# lightning utilities
+pl_trainer:
+  devices: 1
+logger: null

@@ -1,0 +1,159 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from einops import einsum, rearrange, repeat
+
+from torch.nn.modules.transformer import TransformerDecoder
+from hmr4d.network.base_arch.transformer_layer.dit_layerv2 import BasicDiTTransformerBlockV2, ResCondBlock
+from hmr4d.network.base_arch.transformer.dit import TransformerDecoderDiTV2
+from hmr4d.network.gmd.mdm_unet import MdmUnetOutput
+from hmr4d.network.base_arch.embeddings import PosEncoding1D, TimestepEmbedder
+from hmr4d.network.supermotion.bertlike import InputProcess, OutputProcess, ImgSeqProcess, length_to_mask
+
+
+# Image features are added before transformer
+class Network(nn.Module):
+    def __init__(
+        self,
+        # input
+        njoints=22,
+        nfeats=3,
+        text_dim=512,
+        imgseq_dim=512,
+        cam_dim=0,
+        noisyobs_dim=0,
+        max_len=200,
+        # intermediate
+        latent_dim=512,
+        ff_size=1024,
+        num_layers=6,
+        num_heads=4,
+        # training
+        dropout=0.1,
+    ):
+        super().__init__()
+
+        # input
+        self.njoints = njoints
+        self.nfeats = nfeats
+        self.input_dim = self.njoints * self.nfeats
+        self.text_dim = text_dim
+        self.imgseq_dim = imgseq_dim
+        self.cam_dim = cam_dim
+        self.noisyobs_dim = noisyobs_dim
+        self.max_len = max_len
+
+        # intermediate
+        self.num_cond = 3  # t, text, imgseq
+        self.latent_dim = latent_dim
+        self.ff_size = ff_size
+        self.num_layers = num_layers
+        self.num_heads = num_heads
+        self.dropout = dropout
+
+        # build model
+        self._build_input()
+        self._build_transformer()
+        self._build_output()
+
+    def _build_input(self):
+        # Global positional encoding
+        self.sincos_pos_embedding = PosEncoding1D(self.latent_dim, self.dropout)
+
+        # The model is batch_first, composed of linear layers
+        # Input: noisy x
+        max_len = self.max_len
+        self.learned_pos_embedding = nn.Parameter(torch.randn(max_len, self.latent_dim), requires_grad=True)
+        self.input_process = InputProcess(self.input_dim, self.latent_dim, self.learned_pos_embedding)
+
+        # Condition: PosEnc, Timestep, Text, ImgSeq
+        self.embed_timestep = TimestepEmbedder(self.sincos_pos_embedding)
+        self.embed_text = nn.Linear(self.text_dim, self.latent_dim)
+        self.imgseq_process = ImgSeqProcess(self.imgseq_dim, self.latent_dim, self.learned_pos_embedding)
+        if self.cam_dim > 0:
+            self.embed_camext = nn.Sequential(
+                nn.Linear(4, self.latent_dim * 2),
+                nn.SiLU(),
+                nn.Linear(self.latent_dim * 2, self.latent_dim),
+            )
+        if self.noisyobs_dim > 0:
+            self.embed_noisyobs = nn.Sequential(
+                nn.Linear(self.noisyobs_dim, self.latent_dim * 2),
+                nn.SiLU(),
+                nn.Linear(self.latent_dim * 2, self.latent_dim),
+            )
+            self.noisyobs_block = ResCondBlock(self.latent_dim, self.latent_dim, self.dropout)
+        self.img_block = ResCondBlock(self.latent_dim, self.latent_dim, self.dropout)
+
+    def _build_transformer(self):
+        layer = BasicDiTTransformerBlockV2(
+            d_model=self.latent_dim,
+            nhead=self.num_heads,
+            dim_feedforward=self.ff_size,
+            dropout=self.dropout,
+            batch_first=True,
+            norm_first=True,  # prenorm
+        )
+        self.TransDecoder = TransformerDecoderDiTV2(layer, num_layers=self.num_layers)
+
+    def _build_output(self):
+        self.output_process = OutputProcess(self.input_dim, self.latent_dim, self.njoints, self.nfeats)
+
+    def forward(self, x, timesteps, length, f_text, f_text_length, f_imgseq, f_camext=None, f_noisyobs=None):
+        """
+        Args:
+            x: (B, C, L), a noisy motion sequence, C=263 when using hmlvec263, C=22*3 when using joint*nfeat
+            timesteps: (B,)
+            length: (B), valid length of x, if None then use x.shape[2]
+            f_text: (B, 77, C)
+            f_text_length: (B,)
+            f_imgseq: (B, I, C)
+            f_camext: (B, 1, 4), camera extrinsic parameters
+            f_noisyobs: (B, L, C), nosiy local pose observation
+        """
+        B, _, L = x.shape
+
+        # Set timesteps
+        if len(timesteps.shape) == 0:
+            timesteps = timesteps.reshape([1]).to(x.device).expand(x.shape[0])
+        assert len(timesteps) == x.shape[0]
+
+        # Input
+        f_motion = self.input_process(x)  # (B, 200, D), in-proj x and add positional encoding
+        f_timesteps = self.embed_timestep(timesteps).unsqueeze(1)  # (B, 1, D)
+        if f_camext is not None:
+            assert len(f_camext.shape) == 3
+            f_camext = self.embed_camext(f_camext)  # (B, 1, D)
+            f_timesteps = f_timesteps + f_camext  # (B, 1, D)
+        f_text = self.embed_text(f_text)  # (B, 77, D)
+        f_imgseq = self.imgseq_process(f_imgseq)  # (B, I, D)
+        if f_noisyobs is not None:
+            f_noisyobs = self.embed_noisyobs(f_noisyobs)
+            # f_noisyobs = f_noisyobs * (timesteps > 50)[:, None, None]
+            # f_noisyobs = f_noisyobs * 0
+
+        # Setup length and make padding mask
+        assert B == length.size(0) == f_text_length.size(0)
+        pmask_motion = ~length_to_mask(length, f_motion.size(1))  # (B, L)
+        pmask_text = ~length_to_mask(f_text_length, f_text.size(1))  # (B, 77)
+
+        xseq = self.sincos_pos_embedding(f_motion)  # (B, L, D)
+        xseq = self.img_block(xseq, f_imgseq)
+        if f_noisyobs is not None:
+            xseq = self.noisyobs_block(xseq, f_noisyobs)
+        output = self.TransDecoder(
+            xseq,
+            f_timesteps,
+            f_text,
+            tgt_key_padding_mask=pmask_motion,
+            memory_key_padding_mask=pmask_text,
+        )
+
+        output = output[:, :L]  # (B, L, C)
+        pmask_motion = pmask_motion[:, :L]  # (B, L)
+
+        output = self.output_process(output)  # (B, C, L)
+
+        mask = ~pmask_motion.unsqueeze(1)  # (B, 1, L)
+
+        return MdmUnetOutput(sample=output, mask=mask)

@@ -1,0 +1,48 @@
+_target_: hmr4d.model.mas.pipeline.mv_frompred.MVFromPredPipeline
+
+args:
+  diffusion_steps: 100
+  inference_diffusion_steps: 10
+  # Scheduler
+  scheduler_opt_train: # Always DDPM
+    beta_schedule: squaredcos_cap_v2 # cosine instead of linear
+    prediction_type: sample
+    clip_sample: False
+    timestep_spacing: "linspace"
+    num_train_timesteps: ${..diffusion_steps}
+  scheduler_opt_sample:
+    _target_: diffusers.schedulers.DDIMScheduler 
+    beta_schedule: squaredcos_cap_v2 # cosine instead of linear
+    prediction_type: sample
+    clip_sample: False
+    timestep_spacing: "linspace"
+    num_train_timesteps: ${..diffusion_steps}
+  scheduler_opt_sample3d:
+    _target_: hmr4d.model.mas.utils.schedulers.DDIM3DScheduler 
+    beta_schedule: squaredcos_cap_v2 # cosine instead of linear
+    prediction_type: sample
+    clip_sample: False
+    timestep_spacing: "linspace"
+    num_train_timesteps: ${..diffusion_steps}
+
+  # Finetune
+  is_hastext: False
+  is_freeze2d: True
+  is_2dinput: True
+
+  # Sample 2D
+  num_inference_steps: ${.inference_diffusion_steps}
+  enable_record_progress: False
+  num_visualize: ${.inference_diffusion_steps}
+  guidance_scale: 1.0
+
+  # Sample 3D
+  is_worldnoise: True
+  is_consisblock: True
+
+  # Encode/Decode Func
+  endecoder_opt: null # Should be overriden by the experiment config
+
+args_clip: null # Should be overriden by the experiment config
+args_denoiser2d: null # Should be overriden by the experiment config
+args_denoisermv: null # Should be overriden by the experiment config

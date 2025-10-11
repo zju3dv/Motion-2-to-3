@@ -1,0 +1,31 @@
+# @package _global_
+defaults:
+  - override /data: motion2dmv_test/HumanML3D_2dmv_nr
+  - override /callbacks: null
+  - _self_
+
+task: test
+
+# utilities in the entry file
+# will not override previous setting if already set
+# ckpt_path: ???
+ckpt_type: pl
+
+seed: 42
+
+# Callbacks
+callbacks:
+  metric_generation:
+    _target_: hmr4d.model.mas.callbacks.metric_generation.MetricT2M
+    endecoder_opt:
+      _target_: hmr4d.model.mas.utils.motion3d_endecoder.Hmlvec263OriginalEnDecoder
+      stats_module: hmr4d.network.evaluator.statistics
+      stats_name: T2M_VEC
+  # dumper: # uncomment to enable generation result dumping
+  #   _target_: hmr4d.utils.callbacks.dump_results.ResultDumper
+  #   saved_dir: ./outputs/dumped_t2m_seed42
+
+# lightning utilities
+pl_trainer:
+  devices: 1
+logger: null

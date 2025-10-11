@@ -1,0 +1,7 @@
+defaults:
+  - sahmr4d/network@network: mr_motion_net
+  - common/optimizer@optimizer: adamw_1e-4_GMD
+
+_target_: hmr4d.model.sahmr4d.pl_model.MotionRecoveryModel
+
+seed: ${seed}

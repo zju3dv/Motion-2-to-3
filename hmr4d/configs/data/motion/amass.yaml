@@ -1,0 +1,14 @@
+# definition of lightning datamodule (dataset + dataloader)
+# Just for calculating statistics
+_target_: hmr4d.datamodule.GeneralDataModule
+name: amass3d_motion
+dataset_target: hmr4d.dataset.amass.amass.BaseDataset
+
+opt:
+  train:
+    - split: "train"
+      root: "inputs/amass/hmlvec_neutral.pth"
+
+  train_loader:
+    batch_size: 64
+    num_workers: 4

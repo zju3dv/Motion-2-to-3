@@ -1,0 +1,27 @@
+# @package _global_
+defaults:
+  - mas/video_motion2d_nr/baseline
+  - /network/sm_endecoder/2d_video_nextroot@model.pipeline.args.endecoder_opt
+  - /network/mas/mdm_S@model.pipeline.args_denoiser2d
+  
+exp_name_base: "mdm"
+exp_name_var: "new_hml3d"
+
+model:
+  pipeline:
+    args:
+      is_worldnoise: True
+      is_consisblock: True
+      with_projection: False
+      is_perspective: False
+      is_heightnorm: True
+      accum_global_traj: False
+      threshold_2d: 0.65 # filter out single frame joint
+
+data:
+  loader_opts:
+    train:
+      # batch_size: 128
+      batch_size: 32 # 4090
+      # num_workers: 0
+

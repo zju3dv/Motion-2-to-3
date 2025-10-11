@@ -1,0 +1,20 @@
+# @package _global_
+
+exp_name: debug
+
+data:
+  opt:
+    train_loader:
+      batch_size: 2
+      num_workers: 2
+    val_loader: 
+      batch_size: 2
+      num_workers: 2
+
+pl_trainer:
+  limit_train_batches: 6
+  limit_val_batches: 6
+  enable_checkpointing: False
+
+callbacks:
+  model_checkpoint: null

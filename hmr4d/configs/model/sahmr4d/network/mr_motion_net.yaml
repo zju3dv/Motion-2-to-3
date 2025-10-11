@@ -1,0 +1,43 @@
+_target_: hmr4d.network.sahmr4d.mr_motion_net.MrMotionNet
+
+args_clip:
+  # clip_pretrained_path: inputs/checkpoints/huggingface/clip-vit-large-patch14
+  clip_target: CLIPTextModelWithProjection
+  clip_pretrained_path: inputs/checkpoints/huggingface/clip-vit-base-patch32
+  uncond_strategy: "zero_latent"
+
+args_unet:
+  input_dim: 263
+  latent_dim: 512 # cond-dim and net-dim
+  arch: unet
+  dim_mults: [2, 2, 2, 2]
+  attention: False
+  adagn: True
+  zero: True
+  version: "GMD_traj_release" # important
+
+args:
+  scheduler_type: "ddim"              # choices: ddim | ddpm
+  num_inference_steps: 50
+  num_visualize: 50
+  scheduler_opt:
+    beta_schedule: squaredcos_cap_v2  # cosine instead of linear
+    prediction_type: sample
+    clip_sample: False
+    timestep_spacing: "linspace"
+
+  guidance_scale: 2.5                 # CFG scale
+  inpaint:
+    # method: gmd_partial_inpaint
+    method: add_noise_hmlvec263
+    t_start: 999
+    t_end: 500
+
+  prompt_latent_type: text
+  drop_clip: 0.1
+
+
+args_freeze:
+  clip_trainable: null
+  clip_proj_trainable: null
+  unet_trainable: null

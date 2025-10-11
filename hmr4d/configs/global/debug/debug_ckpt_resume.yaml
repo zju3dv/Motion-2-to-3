@@ -1,0 +1,15 @@
+# @package _global_
+
+exp_name: debug
+
+data:
+  opt:
+    train_loader:
+      batch_size: 2
+      num_workers: 2
+
+pl_trainer:
+  limit_train_batches: 6
+  log_every_n_steps: 3
+
+resume_training: True

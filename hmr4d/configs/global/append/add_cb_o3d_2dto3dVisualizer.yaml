@@ -1,0 +1,6 @@
+# @package _global_
+
+callbacks:
+  o3d_vis_2dto3d:
+    _target_: hmr4d.utils.callbacks.vis_motion2dto3d.Motion2Dto3DVisualizer
+    skeleton_type: smpl

@@ -1,0 +1,58 @@
+_target_: hmr4d.model.mas.pipeline.mas.MASPipeline
+
+args:
+  diffusion_steps: 100
+  # Scheduler
+  scheduler_opt_train: # Always DDPM
+    beta_schedule: squaredcos_cap_v2 # cosine instead of linear
+    prediction_type: sample
+    clip_sample: False
+    timestep_spacing: "linspace"
+    num_train_timesteps: ${..diffusion_steps}
+  scheduler_opt_sample:
+    _target_: diffusers.schedulers.DDPMScheduler # potentially DDIM
+    beta_schedule: squaredcos_cap_v2 # cosine instead of linear
+    prediction_type: sample
+    clip_sample: False
+    timestep_spacing: "linspace"
+    num_train_timesteps: ${..diffusion_steps}
+  scheduler_opt_sample3d:
+    _target_: hmr4d.model.mas.utils.schedulers.DDPM3DScheduler # potentially DDIM
+    beta_schedule: squaredcos_cap_v2 # cosine instead of linear
+    prediction_type: sample
+    clip_sample: False
+    timestep_spacing: "linspace"
+    num_train_timesteps: ${..diffusion_steps}
+  
+  with_projection: True
+
+  accum_global_traj: True
+
+  is_perspective: True
+
+  # Finetune
+  is_freeze_backbone: False
+  is_freeze2d: False
+  is_camemb: False
+
+  is_lastnorm: True
+  is_heightnorm: True
+
+  # training video 2D
+  threshold_2d: 0.3
+
+  # Sample 2D
+  num_inference_steps: ${.diffusion_steps}
+  enable_record_progress: False
+  num_visualize: ${.diffusion_steps}
+  guidance_scale: 1.0
+
+  # Sample 3D
+  is_worldnoise: True
+  is_consisblock: True
+
+  # Encode/Decode Func
+  endecoder_opt: null # Should be overriden by the experiment config
+
+args_clip: null # Should be overriden by the experiment config
+args_denoiser2d: null # Should be overriden by the experiment config

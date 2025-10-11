@@ -1,0 +1,9 @@
+_target_: hmr4d.network.gmd.mdm_unet.MdmUnet
+input_dim: 263
+latent_dim: 512 # cond-dim and net-dim
+arch: unet
+dim_mults: [2, 2, 2, 2]
+attention: False
+adagn: True
+zero: True
+version: "GMD_traj_release" # important

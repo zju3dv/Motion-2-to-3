@@ -1,0 +1,39 @@
+# @package _global_
+defaults:
+  - mas/video_motion2dmv_nr/baseline
+  - /network/mas/mdmmv_no2d_r_S@model.pipeline.args_denoisermv
+  - /model/common/optimizer/adamw_1e-4_GMD@model.optimizer
+
+exp_name_base: "mdm"
+exp_name_var: "new_hmlfinetune"
+
+ckpt_type: "pl"
+
+# If you are finetuning the model, uncomment the following line
+ckpt_path: "outputs/All_sports_2dmotion_nr/mdm-videofine/checkpoints/e0120-s074052.ckpt"
+
+data:
+  dataset_opts:
+    N_views: 4
+    is_cam_rel2human: False
+  loader_opts:
+    train:
+      batch_size: 32 #4090
+      # batch_size: 8
+model:
+  pipeline:
+    args:
+      diffusion_steps: 100
+      is_hastext: True
+      is_freeze2d: True 
+      is_2dinput: False
+      noise2d_scale: 0.1
+
+      with_projection: False
+
+      # Directly training MV, without worldnoise is better when inference.
+      # When finetune with 2d input, worldnoise is better when inference.
+      is_worldnoise: True
+
+      # is_consisblock: True
+      is_consisblock: False

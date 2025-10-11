@@ -1,0 +1,53 @@
+// Some commonly used launch configurations for VSCode
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Train",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "HYDRA_FULL_ERROR": "1",
+                "CUDA_VISIBLE_DEVICES": "0,",
+            },
+            "args": [
+                "exp=motion3d_prior/baseline/baseline",
+                "global/debug=vilab_skipval_datav2"
+            ]
+        },
+
+        {
+            "name": "Test",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/train.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "HYDRA_FULL_ERROR": "1",
+                "CUDA_VISIBLE_DEVICES": "0,",
+            },
+            "args": [
+                "exp=motion3d_prior/baseline/baseline",
+                "global/task=supermotion/test_prior3d",
+                "+pl_trainer.limit_test_batches=2",  // TODO: 2loader -> 64*2?
+                "data.loader_opts.test.num_workers=0",
+            ]
+        },
+
+        {
+            "name": "Run-File",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/run_file.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "HYDRA_FULL_ERROR": "1",
+            }
+        }
+    ]
+}

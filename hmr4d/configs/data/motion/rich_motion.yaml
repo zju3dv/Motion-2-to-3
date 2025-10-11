@@ -1,0 +1,30 @@
+# definition of lightning datamodule (dataset + dataloader)
+_target_: hmr4d.datamodule.GeneralDataModule
+name: rich_motion_trainval_test
+dataset_target: hmr4d.dataset.rich.rich_motion.Dataset
+
+opt:
+  train:
+    - split: "train"
+      length: 120
+      img_fps: 4
+      cond_img_source: 2 # 0: cv2 read imgs | 1: decord read videos | 2: directly use saved latents
+    - split: "val"
+      length: 120
+      img_fps: 4
+      cond_img_source: 2 # 0: cv2 read imgs | 1: decord read videos | 2: directly use saved latents
+
+  train_loader:
+    batch_size: 16
+    num_workers: 8
+
+  val:
+    split: "test"
+    length: 120
+    start_frame_interval: 120
+    img_fps: 4
+    cond_img_source: 2 # 0: cv2 read imgs | 1: decord read videos | 2: directly use saved latents
+    limit_size: null
+  val_loader:
+    batch_size: 32
+    num_workers: 8

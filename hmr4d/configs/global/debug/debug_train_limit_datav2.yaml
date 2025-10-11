@@ -1,0 +1,22 @@
+# @package _global_
+
+exp_name: debug
+
+data:
+  limit_each_trainset: 40
+  loader_opts:
+    train:
+      batch_size: 4
+      num_workers: 0
+    val:
+      batch_size: 1
+      num_workers: 0
+
+pl_trainer:
+  # limit_train_batches: 6  # now, we use limit_each_trainset, so this is not needed
+  limit_val_batches: 2
+  enable_checkpointing: False
+  devices: 1
+
+callbacks:
+  model_checkpoint: null

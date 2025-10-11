@@ -1,0 +1,6 @@
+scheduler:
+  _target_: torch.optim.lr_scheduler.MultiStepLR
+  milestones: [15]
+  gamma: 0.5
+interval: epoch
+frquency: 1

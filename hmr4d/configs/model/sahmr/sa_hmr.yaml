@@ -1,0 +1,12 @@
+defaults:
+  - sahmr/network@network: sahmr
+  - sahmr/loss@loss: sahmr
+  - common/optimizer@optimizer: adam_1e-3
+  - common/scheduler_cfg@scheduler_cfg: MultiEpochLR_LoFTR  # half lr at [15]
+
+_target_: hmr4d.model.sahmr.sahmr_model.SAHMR_Model
+# load_net_from_ckpt: "inputs/checkpoints/pretrained_sahmr"
+data_name: ${data_name}
+loss_weights: ${model.loss.weights}
+train_extra_flip: False
+skip_spv_bi4s_seg: True

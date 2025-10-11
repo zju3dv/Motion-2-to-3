@@ -1,0 +1,62 @@
+_target_: hmr4d.network.sahmr4d.hmr4d_prior2d3d_pipeline.Hmr4dPrior2d3dPipeline
+
+args:
+  # --- Others --- #
+  guidance_scale: 0. # CFG scale 
+  prompt_latent_type: text
+  num_inference_steps: 100  # Must be 100 since I'm not sure ddpm3d's performance
+
+  # --- 2D prior --- #
+  scheduler_opt_2d:
+    beta_schedule: squaredcos_cap_v2 # cosine instead of linear
+    prediction_type: sample
+    clip_sample: False
+    timestep_spacing: "linspace"
+    num_train_timesteps: 100
+  stats_name_2d: HML3D_ORTHO
+
+  # --- 3D prior --- #
+  scheduler_opt_3d:
+    beta_schedule: squaredcos_cap_v2 # cosine instead of linear
+    prediction_type: sample
+    clip_sample: False
+    timestep_spacing: "linspace"
+    num_train_timesteps: 1000
+  stats_name_3d: GMD_HMLVEC263
+    
+  #  --- Triangulation --- #
+  triag:
+    # method: 2d_triangulation
+    # method: 3d_triangulation
+    # method: 2d_3d_triangulation 
+    method: 2dlocal_3d_triangulation 
+
+
+args_clip:
+  # clip_pretrained_path: inputs/checkpoints/huggingface/clip-vit-large-patch14
+  # clip_target: CLIPTextModelWithProjection
+  clip_target: CLIPTextAndVisionModelWithProjection
+  pooling_methd: "avg" # for vision model: avg | clear | transformer
+  clip_pretrained_path: inputs/checkpoints/huggingface/clip-vit-base-patch32
+  uncond_strategy: "zero_latent"
+
+args_denoiser2d:
+  model: MDM
+  njoints: 22
+  nfeats: 2
+  latent_dim: 512 # cond-dim and net-dim
+  ff_size: 1024
+  num_layers: 8
+  num_heads: 4
+  cond_mask_prob: 0.1
+
+args_denoiser3d:
+  model: MdmUnet
+  input_dim: 263
+  latent_dim: 512 # cond-dim and net-dim
+  arch: unet
+  dim_mults: [2, 2, 2, 2]
+  attention: False
+  adagn: True
+  zero: True
+  version: "variable_and_8_divisible" # important

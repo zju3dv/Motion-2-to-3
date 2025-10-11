@@ -1,0 +1,27 @@
+# definition of lightning datamodule (dataset + dataloader)
+_target_: hmr4d.datamodule.GeneralDataModule
+name: hml3d_motion
+dataset_target: hmr4d.dataset.hml3d.hml3d.Dataset
+
+opt:
+  train:
+    - split: "train"
+      root: "inputs/hml3d/hmlvec.pth"
+    # original mdm uses only train split for training
+    # - split: "val"
+    #   root: "inputs/hml3d/hmlvec.pth"
+    # - split: "test"
+    #   root: "inputs/hml3d/hmlvec.pth"
+
+  train_loader:
+    batch_size: 64
+    num_workers: 4
+
+  val:
+    split: "test"
+    root: "inputs/hml3d/hmlvec.pth"
+    limit_size: null
+  val_loader:
+    # Only supports batch=1
+    batch_size: 1
+    num_workers: 1

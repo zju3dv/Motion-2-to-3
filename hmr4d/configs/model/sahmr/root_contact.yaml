@@ -1,0 +1,12 @@
+defaults:
+  - sahmr/network@network: rcnet
+  - sahmr/loss@loss: rcnet
+  - common/optimizer@optimizer: adam_1e-3
+  - common/scheduler_cfg@scheduler_cfg: MultiEpochLR_LoFTR  # half lr at [15]
+
+_target_: hmr4d.model.sahmr.rcnet_model.RCNet_Model
+
+data_name: ${data_name}
+loss_weights: ${model.loss.weights}
+train_extra_flip: True
+skip_spv_bi4s_seg: False

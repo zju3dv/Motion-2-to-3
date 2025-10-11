@@ -1,0 +1,5 @@
+defaults:
+  - sahmr4d/network@network: hmr4d_prior2d3d_pieline
+
+_target_: hmr4d.model.sahmr4d.pl_model_mocap.MocapPL
+seed: ${seed}

@@ -1,0 +1,19 @@
+# @package _global_
+defaults:
+  - override /data: motion/rich_motion
+
+# Note: replace ckpt_path and ckpt_type with your own
+
+task: fit
+
+# lightning utilities
+pl_trainer:
+  precision: 16
+  devices: 1
+callbacks:
+  model_checkpoint: null
+
+logger: 
+  _target_: pytorch_lightning.loggers.TensorBoardLogger
+  save_dir: ${output_dir}
+  name: ${exp_name}

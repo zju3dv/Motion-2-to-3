@@ -1,0 +1,27 @@
+# @package _global_
+defaults:
+  - override /data: supermotionsmpl/TEST_amass
+  - override /callbacks: null
+  - _self_
+
+task: test
+
+# utilities in the entry file
+# will not override previous setting if already set
+ckpt_path: ???
+ckpt_type: pl
+
+seed: 42
+
+# Callbacks
+# callbacks:
+#   o3d_mr_motion:
+#     _target_: hmr4d.utils.callbacks.o3d_vis_motion.MotionVisualizer
+#     name: o3d_motion_vis 
+#     time_postfix: True
+#     max_batches: 1000
+
+# lightning utilities
+pl_trainer:
+  devices: 1
+logger: null

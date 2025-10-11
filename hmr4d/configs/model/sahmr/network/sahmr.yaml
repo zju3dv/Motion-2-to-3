@@ -1,0 +1,10 @@
+_target_: hmr4d.network.sahmr.sahmr.sahmr.SAHMR
+rc_cfg: {}
+rc_ckpt: ""
+m_cfg:
+  pred_coord: 'crm'
+  corr_pc_type: 'pcSeg' 
+  attn_type: 'linear'
+  dropout: 0.1
+  cp_mimic_bert: self_attn_linearx2
+m_ckpt: "inputs/checkpoints/metro/metro_3dpw_state_dict.bin" # pretrained

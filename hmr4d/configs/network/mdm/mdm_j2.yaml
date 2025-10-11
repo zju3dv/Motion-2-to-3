@@ -1,0 +1,8 @@
+_target_: hmr4d.network.mdm.mdm.MDM
+njoints: 22
+nfeats: 2
+latent_dim: 512 # cond-dim and net-dim
+ff_size: 1024
+num_layers: 8
+num_heads: 4
+cond_mask_prob: 0.1

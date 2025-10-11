@@ -1,0 +1,5 @@
+weights: 
+  vertex: 1.
+  joint: 1.
+  corr_points: 1.
+  vertex_c: 1.

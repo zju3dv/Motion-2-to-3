@@ -1,0 +1,8 @@
+weights:
+  pelvis_hm: 1.
+  pelvis_depth: 10.
+  pcSeg_voxel: 1.
+  vox_xyz_offset: 1.
+  pelvis_xyz_refined: 1.
+  bi4s_seg_hm: 1.  # aux-2dseg-loss
+  bi4s_seg_hm_flip: 1.  # aux-2dseg-loss

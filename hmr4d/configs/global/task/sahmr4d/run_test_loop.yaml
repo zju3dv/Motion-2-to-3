@@ -1,0 +1,15 @@
+# @package _global_
+defaults:
+  - override /data: motion/rich_motion_test
+
+# Note: replace ckpt_path and ckpt_type with your own
+
+task: test
+
+# lightning utilities
+pl_trainer:
+  devices: 1
+  precision: 16-mixed
+logger: null
+callbacks:
+  model_checkpoint: null

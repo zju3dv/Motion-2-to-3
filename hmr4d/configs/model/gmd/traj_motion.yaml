@@ -1,0 +1,7 @@
+defaults:
+  - gmd/network@traj_network: gmd_traj_net
+  - gmd/network@motion_network: gmd_motion_net
+
+_target_: hmr4d.model.gmd.traj_motion_model.TrajMotionModel
+
+seed: ${seed}

@@ -1,0 +1,6 @@
+# @package _global_
+
+callbacks:
+  result_dumper:
+    _target_: hmr4d.utils.callbacks.dump_results.ResultDumper
+    save_dir: ./outputs/dumped_2donly_kungfu

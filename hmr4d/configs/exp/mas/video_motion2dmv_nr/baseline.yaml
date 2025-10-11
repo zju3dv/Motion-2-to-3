@@ -1,0 +1,50 @@
+# @package _global_
+defaults:
+
+  # ---- Modify group option, e.g. network_arch ---- #
+  - /pipeline/mas/mv_pipeline@model.pipeline
+  - /network/sm_endecoder/2d_video_nextroot@model.pipeline.args.endecoder_opt
+  - /network/clip/clip_text_imgseq_bp32@model.pipeline.args_clip
+  - /model/common/optimizer/adamw_1e-5_finetune@model.optimizer
+
+  # ---- Below are loaded before the above config options ---- #
+  - override /model: mas/mas_pl
+  - override /data: motion2dmv/HumanML3D_2dmv_nr
+  - override /callbacks:
+      - model_checkpoint/last_1
+      - model_checkpoint2/every50e
+      - prog_bar/prog_reporter
+      - lr_monitor
+      - train_speed_timer
+
+exp_name_base: "baseline"
+exp_name_var: "v0"
+exp_name: ${exp_name_base}-${exp_name_var}
+task: fit
+
+# model:
+#   pipeline:
+#     args:
+#       endecoder_opt:
+
+data:
+  loader_opts:
+    train:
+      batch_size: 32
+
+pl_trainer:
+  precision: 32
+  inference_mode: False
+  log_every_n_steps: 50
+  gradient_clip_val: 0.5
+
+  max_epochs: 2000
+  check_val_every_n_epoch: 1
+  limit_val_batches: 0 # 0 indicates no test
+  devices: 1
+
+logger:
+  _target_: pytorch_lightning.loggers.TensorBoardLogger
+  save_dir: ${output_dir} # /save_dir/name/version/sub_dir
+  name: ""
+  version: "tb" # merge name and version

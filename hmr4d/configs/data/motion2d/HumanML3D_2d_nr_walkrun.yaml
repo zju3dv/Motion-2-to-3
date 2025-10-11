@@ -1,0 +1,38 @@
+# definition of lightning datamodule (dataset + dataloader)
+_target_: hmr4d.datamodule.general_datamodule_v2.GeneralDataModule
+name: HumanML3D_2dmotion_nr_walkrun
+
+dataset_opts:
+  root: "inputs/hml3d/joints3d.pth"
+  is_ignore_transl: True
+  is_root_next: True
+  required_text: ["walk", "run"]
+  anti_text: null
+  train:
+    # HumanML3D
+    - _target_: hmr4d.dataset.HumanML3D.motion2d.Dataset
+      split: "train_val"
+      root: ${data.dataset_opts.root}
+      is_ignore_transl: ${data.dataset_opts.is_ignore_transl}
+      is_root_next: ${data.dataset_opts.is_root_next}
+      required_text: ${data.dataset_opts.required_text}
+      anti_text: ${data.dataset_opts.anti_text}
+      limit_size: null # 100 for fast debug
+  val:
+    # HumanML3D
+    - _target_: hmr4d.dataset.HumanML3D.motion2d.Dataset
+      split: "test"
+      root: ${data.dataset_opts.root}
+      is_ignore_transl: ${data.dataset_opts.is_ignore_transl}
+      is_root_next: ${data.dataset_opts.is_root_next}
+      required_text: ${data.dataset_opts.required_text}
+      anti_text: ${data.dataset_opts.anti_text}
+      limit_size: null
+
+loader_opts:
+  train:
+    batch_size: 32 # on one gpu
+    num_workers: 4
+  val:
+    batch_size: 1
+    num_workers: 1

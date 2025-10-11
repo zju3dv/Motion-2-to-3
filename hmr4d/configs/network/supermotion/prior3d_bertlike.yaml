@@ -1,0 +1,13 @@
+_target_: hmr4d.network.supermotion.bertlike.Network
+# input
+njoints: 263
+nfeats: 1
+text_dim: 512
+imgseq_dim: 1024 # 512 for clip, 1024 for hmr
+# intermediate
+latent_dim: 512 # cond-dim and net-dim
+ff_size: 1024
+num_layers: 8
+num_heads: 4
+# training
+dropout: 0.1

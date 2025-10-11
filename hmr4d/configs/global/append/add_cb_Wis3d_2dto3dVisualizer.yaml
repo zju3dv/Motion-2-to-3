@@ -1,0 +1,9 @@
+# @package _global_
+
+callbacks:
+  wis3d_vis_2dto3d:
+    _target_: hmr4d.utils.callbacks.vis_motion2dto3d.Wis3DMotion2Dto3DVisualizer
+    name: "ours"
+    subset: "vis"
+    max_len: 300
+    max_count: 1000

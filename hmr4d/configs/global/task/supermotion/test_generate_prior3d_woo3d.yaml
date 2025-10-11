@@ -1,0 +1,34 @@
+# @package _global_
+defaults:
+  - override /data: supermotion3d/TEST_hml3d
+  - override /callbacks: null
+  - _self_
+
+task: test
+
+# utilities in the entry file
+# will not override previous setting if already set
+ckpt_path: ???
+ckpt_type: pl
+
+seed: 42
+
+# Callbacks
+callbacks:
+  # o3d_mr_motion:
+  #   _target_: hmr4d.utils.callbacks.o3d_vis_motion.MotionVisualizer
+  #   name: o3d_motion_vis 
+  #   time_postfix: True
+  #   max_batches: 1000
+
+  metric_generation:
+    _target_: hmr4d.model.supermotion.callbacks.metric_generation.MetricT2M
+    endecoder_opt:
+      _target_: hmr4d.model.supermotion.utils.motion3d_endecoder.Hmlvec263OriginalEnDecoder
+      stats_module: hmr4d.network.evaluator.statistics
+      stats_name: T2M_VEC
+
+# lightning utilities
+pl_trainer:
+  devices: 1
+logger: null

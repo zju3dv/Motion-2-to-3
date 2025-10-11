@@ -1,0 +1,8 @@
+_target_: hmr4d.model.mas.utils.motion2d_endecoder.EuclideanEnDecoder
+stats_module: hmr4d.network.mas.statistics
+# stats_name: IDEA400_NR 
+# stats_name: MOTION_XPP_HML3D_NR
+stats_name: ALL_200H_NR #CUR_ALL_124K_NR 
+# stats_name: CUR_ALL_124K_NR 
+J: 22 # SMPL22 + 1 next root, remove the first root
+C: 2 

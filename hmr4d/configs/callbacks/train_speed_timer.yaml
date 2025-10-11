@@ -1,0 +1,3 @@
+train_speed_timer:
+  _target_: hmr4d.utils.callbacks.train_speed_timer.TrainSpeedTimer
+  N_avg: 5

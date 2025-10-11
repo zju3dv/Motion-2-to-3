@@ -1,0 +1,34 @@
+# @package _global_
+defaults:
+  - mas/video_motion2d_nr/baseline
+  - /network/sm_endecoder/2d_video_nextroot@model.pipeline.args.endecoder_opt
+  - /network/mas/mdm_S@model.pipeline.args_denoiser2d
+  - /model/common/optimizer/adamw_1e-5_finetune@model.optimizer
+
+exp_name_base: "mdm"
+exp_name_var: "new_videofine" 
+# The base model for you to finetune
+ckpt_path: "outputs/HumanML3D_2dmotion_nr/mdm-hml3d/checkpoints/e1999-s102000.ckpt"
+ckpt_type: pl
+
+model:
+  pipeline:
+    args:
+      is_worldnoise: True
+      is_consisblock: True
+
+      is_freeze2d: False
+      is_freeze_backbone: False
+      is_camemb: False
+
+      with_projection: False
+
+      threshold_2d: 0.65 # filter out single frame joint
+    args_denoiser2d:
+      cam_dim: 0
+
+data:
+  loader_opts:
+    train:
+      batch_size: 32
+

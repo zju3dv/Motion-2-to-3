@@ -1,0 +1,41 @@
+_target_: hmr4d.network.gmd.gmd_traj_net_modefied.GmdTrajNet
+
+args_clip:
+  # clip_pretrained_path: inputs/checkpoints/huggingface/clip-vit-large-patch14
+  clip_target: CLIPTextModelWithProjection
+  clip_pretrained_path: inputs/checkpoints/huggingface/clip-vit-base-patch32
+  uncond_strategy: "zero_latent"
+
+args_unet:
+  input_dim: 4
+  latent_dim: 512 # cond-dim and net-dim
+  arch: unet
+  dim_mults: [0.125, 0.25, 0.5]
+  attention: False
+  adagn: True
+  zero: True
+  version: "GMD_traj_release" # important
+
+args:
+  scheduler_type: "ddim"              # choices: ddim | ddpm
+  scheduler_opt:
+    beta_schedule: squaredcos_cap_v2  # cosine instead of linear
+    prediction_type: epsilon
+    clip_sample_range: 6.0            # in normalized space
+
+  guidance_scale: 2.5
+  num_inference_steps: 50
+
+  xz_guidance:
+    t_start: 999
+    t_end: 0 # not included
+    use_var: True
+    traj_as_rkpt: True  # use traj to guide the reconstruction instead of the given keypoints
+  inpaint:
+    t_start: 999
+    t_end: 200 # not included
+
+args_freeze:
+  clip_trainable: null
+  clip_proj_trainable: null
+  unet_trainable: null

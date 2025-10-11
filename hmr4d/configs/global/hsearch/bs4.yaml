@@ -1,0 +1,10 @@
+# @package _global_
+
+exp_name_var: _bs4
+
+data:
+  opt:
+    train_loader:
+      batch_size: 4
+      num_workers: 4
+

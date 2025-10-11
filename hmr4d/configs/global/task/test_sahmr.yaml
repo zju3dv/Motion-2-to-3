@@ -1,0 +1,21 @@
+# @package _global_
+defaults:
+  - _self_
+  - override /data: pose/rich_test_part
+  - override /callbacks: null
+
+task: test
+
+# utilities in the entry file
+# will not override previous setting if already set
+ckpt_path: inputs/checkpoints/pretrained_sahmr/latest_google_drive.pth
+ckpt_type: sahmr
+
+# lightning utilities
+pl_trainer:
+  devices: 1
+
+logger: null
+
+model:
+  output_dir: ${output_dir} # for test dump
