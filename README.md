@@ -60,7 +60,7 @@ inputs/
 You can download the HumanML3D training data here:
 https://drive.google.com/drive/folders/1OZrTlAGRvLjXhXwnRiOC-oxYry1vf-Uu
 
-Put the files under folder inputs/hml3d.
+Put the files under folder `inputs/hml3d`.
 #### 2. Body Models
 ```bash
 You need to sign up for downloading [SMPL](https://smpl.is.tue.mpg.de/). And the checkpoints should be placed in the following structure:
@@ -71,10 +71,8 @@ inputs/checkpoints/body_models/
     └── SMPLH_{GENDER}.pkl  # SMPLH 
 ```
 #### 3. CLIP
-Put CLIP checkpoint here:
-```bash
-inputs/checkpoints/huggingface/clip-vit-base-patch32
-```
+Put CLIP checkpoint here: `inputs/checkpoints/huggingface/clip-vit-base-patch32`.
+
 If you do not have CLIP checkpoint locally, you can uncomment L33 in `hmr4d/network/clip.py` to use CLIP from OpenAI. Remember to set proxy if you are in China.
 
 #### 4. GLOVE
@@ -86,13 +84,15 @@ Put glove at `inputs/checkpoints/glove`.
 #### 5. T2M
 You can find the t2m file here:
 https://huggingface.co/juracera/Motion-2-to-3/tree/main
+
+Put the two folders under `inputs/checkpoints/t2m`.
 ## Test
 ### Checkpoints
 You can download the checkpoints here:
 https://huggingface.co/juracera/Motion-2-to-3/tree/main
 
 Save the one checkpoints in this directory:
-`./outputs/HumanML3D_2dmotionmv_nr/mdm-hmlfinetune/cpurand_best.ckpt`
+`outputs/HumanML3D_2dmotionmv_nr/mdm-hmlfinetune/cpurand_best.ckpt`
 
 **Notice: The provided checkpoints is an updated version. The former one has different performance inbetween machines. This version has a more uniform performance trained on different machines such as V100, RTX4090.**
 
@@ -117,7 +117,7 @@ The referenced metric on HumanML3D, evaluated on an RTX2070 is showed in the tab
 HYDRA_FULL_ERROR=1 python tools/train.py exp=mas/video_motion2dmv_nr/mdm_test global/task=motion2dmv/single_test2dmv_nr 
 ```
 Use saved results for fast metric calculation
-Check `./hmr4d/model/mas/callbacks/metric_generation.py`. 
+Check `hmr4d/model/mas/callbacks/metric_generation.py`. 
 This is not a runnable file, but you can see where the pth is saved.
 
 ### Test the MV model using New Text Prompts
