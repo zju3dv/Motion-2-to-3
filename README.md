@@ -184,10 +184,12 @@ This will save a `joints3d.pth` under `./inputs/hml3d`.
 If you find this code useful for your research, please use the following BibTeX entry.
 
 ```
-@article{pi2024motion2to3,
-  title={Motion-2-to-3: Leveraging 2D Motion Data to Boost 3D Motion Generation},
-  author={Pi, Huaijin and Guo, Ruoxi and Shen, Zehong and Shuai, Qing and Hu, Zechen and Wang, Zhumei and Dong, Yajiao and Hu, Ruizhen and Komura, Taku and Peng, Sida and Zhou, Xiaowei},
-  journal={arXiv preprint arXiv:2412.13111},
-  year={2024}
+@InProceedings{Guo_2025_ICCV,
+    author    = {Guo, Ruoxi and Pi, Huaijin and Shen, Zehong and Shuai, Qing and Hu, Zechen and Wang, Zhumei and Dong, Yajiao and Hu, Ruizhen and Komura, Taku and Peng, Sida and Zhou, Xiaowei},
+    title     = {Motion-2-to-3: Leveraging 2D Motion Data for 3D Motion Generations},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2025},
+    pages     = {14305-14316}
 }
 ```
