@@ -1,6 +1,5 @@
 # Motion-2-to-3: Leveraging 2D Motion Data to Boost 3D Motion Generation
-### [Project Page](https://zju3dv.github.io/Motion-2-to-3) | [Paper](https://arxiv.org/abs/2412.13111)
-
+### [Project Page](https://zju3dv.github.io/Motion-2-to-3) | [Paper](https://openaccess.thecvf.com/content/ICCV2025/papers/Guo_Motion-2-to-3_Leveraging_2D_Motion_Data_for_3D_Motion_Generations_ICCV_2025_paper.pdf)
 > Motion-2-to-3: Leveraging 2D Motion Data to Boost 3D Motion Generation  
 > [Ruoxi Guo](https://www.researchgate.net/profile/Ruoxi-Guo-2)<sup>\*</sup>,
 [Huaijin Pi](https://phj128.github.io/)<sup>\*</sup>,
