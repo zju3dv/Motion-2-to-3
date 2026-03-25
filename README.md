@@ -60,6 +60,10 @@ You can download the HumanML3D training data here:
 https://drive.google.com/drive/folders/1OZrTlAGRvLjXhXwnRiOC-oxYry1vf-Uu
 
 Put the files under folder `inputs/hml3d`.
+
+You also need the joints3d.pth, which you could also find it on
+https://huggingface.co/juracera/Motion-2-to-3/tree/main
+
 #### 2. Body Models
 ```bash
 You need to sign up for downloading [SMPL](https://smpl.is.tue.mpg.de/). And the checkpoints should be placed in the following structure:
